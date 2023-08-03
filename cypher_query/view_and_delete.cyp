@@ -1,0 +1,3 @@
+
+SHOW INDEXES
+DROP INDEX post_index

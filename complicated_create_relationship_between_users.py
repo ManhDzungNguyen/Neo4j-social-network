@@ -7,7 +7,7 @@ from neo4j_adapter import NeoAdapter
 neo = NeoAdapter(host="10.9.3.209", port="7687", password="12345678")
 
 init_time = time.time()
-idx = "ts_01"
+relationship_name = "rel_01"
 start_year = 2018
 start_month = 7
 start_day = 1
@@ -59,8 +59,8 @@ CALL {
     WITH user1, user2, COLLECT(DISTINCT post) AS commonPosts
     WITH user1, user2, SIZE(commonPosts) AS numberOfCommonPosts
     WHERE numberOfCommonPosts > 1
-    MERGE (user1)-[r:COMMENTED_COMMON_POSTS_"""
-    + idx
+    MERGE (user1)-[r:"""
+    + relationship_name
     + """]-(user2)
     SET r.weight = numberOfCommonPosts
 } IN TRANSACTIONS OF 10 ROWS

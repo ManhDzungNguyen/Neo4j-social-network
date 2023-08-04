@@ -1,4 +1,5 @@
 # ---> Custom
+archive/
 data/
 docker/neo4j/
 *.ipynb

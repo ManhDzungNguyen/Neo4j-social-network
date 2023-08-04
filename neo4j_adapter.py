@@ -6,16 +6,27 @@ class NeoAdapter(object):
     def __init__(self, host="localhost", port="7688", password="123!@#"):
         self.graph = Graph(host=host, port=port, password=password)
 
-    def get_all_nodes(self, label=()):
-        return self.graph.nodes.match(*label)
 
-    def clear_all_data(self):
+    def run_query(self, query=None, filepath=None):
+        if filepath:
+            with open(filepath, "r") as file:
+                query = file.read()
+
+        res = self.graph.run(query)
+        return res
+    
+
+    def clear_database(self):
+        ls_graph = self.list_graph()
+        for graph in ls_graph:
+            self.drop_graph(graph)
+        
         query = """
-            MATCH (n)
-            CALL {
-                WITH n
-                DETACH DELETE n
-            } IN TRANSACTIONS
+            CALL apoc.periodic.iterate(
+                'MATCH (n) RETURN n', 
+                'DETACH DELETE n', 
+                { batchSize:1000 }
+            )
         """
         self.graph.run(query)
 
@@ -24,17 +35,22 @@ class NeoAdapter(object):
         for index in ls_index:
             self.graph.run(f"DROP INDEX {index}")
 
-        
-        
 
-    def run_query_from_file(self, filepath):
-        with open(filepath, "r") as file:
-            query = file.read()
-
+    def drop_relationship(self, relationship: str):
+        query = f"""
+            CALL apoc.periodic.iterate(
+                'MATCH p = ()-[r:{relationship}]->() RETURN r',
+                'DETACH DELETE r',
+                {{batchSize:1000}}
+            )
+            YIELD batches, total
+            RETURN batches, total
+        """
         res = self.graph.run(query)
         return res
 
-    def graph_list(self):
+
+    def list_graph(self):
         """
         show graphs in catalog
         """
@@ -43,12 +59,14 @@ class NeoAdapter(object):
             YIELD graphName
             RETURN graphName;
         """
-        res = self.graph.run(query)
+        res = self.graph.run(query).data()
+        res = [gds_graph['graphName'] for gds_graph in res]
         return res
 
-    def remove_graph(self, graph_name):
+
+    def drop_graph(self, graph_name):
         """
-        delete a graph
+        drop a graph
         """
         query = f"""
             CALL gds.graph.drop('{graph_name}')
@@ -56,6 +74,7 @@ class NeoAdapter(object):
         """
         res = self.graph.run(query)
         return res
+
 
     def calculate_PageRank(self, graph_name, top_k=20, to_pandas=True):
         start_time = time.time()

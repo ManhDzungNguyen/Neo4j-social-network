@@ -9,3 +9,10 @@ RETURN count(n) AS numberOfNodes
 MATCH ()-[r]->()
 RETURN count(r) AS numberOfRelationships
 
+// show all indexes
+SHOW INDEXES
+
+// show all gds.graph
+CALL gds.graph.list()
+YIELD graphName
+RETURN graphName;

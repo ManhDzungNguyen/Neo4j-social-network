@@ -18,11 +18,14 @@ class NeoAdapter(object):
             } IN TRANSACTIONS
         """
         self.graph.run(query)
+
         index_info = self.graph.run("SHOW INDEXES").data()
         ls_index = [index["name"] for index in index_info]
         for index in ls_index:
             self.graph.run(f"DROP INDEX {index}")
 
+        
+        
 
     def run_query_from_file(self, filepath):
         with open(filepath, "r") as file:

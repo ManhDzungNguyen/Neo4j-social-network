@@ -89,6 +89,7 @@ last_cmt_time : datetime(edge.last_cmt_time)
                         }}]->(post)
 """
 graph.run(query_import_relationship, parameters=commented_relationship_data)
+graph.run("CREATE INDEX comment_time FOR ()-[r:COMMENTED]-() ON (r.first_cmt_time)")
 print(f"Fininised importing COMMENTED relationships: {time.time() - start_time}")
 
 

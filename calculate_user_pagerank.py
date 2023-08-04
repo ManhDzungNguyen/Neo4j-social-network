@@ -8,4 +8,4 @@ if not check_use_graph:
     neo.run_query_from_file("./cypher_query/project_user_graph.cyp")
 
 df_pagerank = neo.calculate_PageRank("user-subgraph", top_k=200)
-df_pagerank.to_csv("pagerank_top200.csv")
+df_pagerank.to_csv("pagerank_top200.csv", index=False)

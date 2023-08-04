@@ -5,3 +5,14 @@ WITH communityId, COUNT(nodeId) AS nodeCount
 RETURN communityId, nodeCount
 ORDER BY nodeCount DESC
 LIMIT 10;
+
+
+// PageRank with Weight
+CALL gds.pageRank.stream('user-subgraph', {
+  maxIterations: 20,
+  dampingFactor: 0.85,
+  relationshipWeightProperty: 'weight'
+  })
+  YIELD nodeId, score
+  RETURN nodeId, score
+   ORDER BY score DESC;

@@ -1,4 +1,6 @@
+# ---> Custom
 data/
+docker/neo4j/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

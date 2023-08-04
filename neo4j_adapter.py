@@ -66,7 +66,7 @@ class NeoAdapter(object):
                 relationshipWeightProperty: 'weight'
             })
             YIELD nodeId, score
-            RETURN nodeId, score
+            RETURN gds.util.asNode(nodeId).uid AS uid, score
             ORDER BY score DESC
             LIMIT """
             + str(top_k)

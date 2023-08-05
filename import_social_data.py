@@ -50,7 +50,7 @@ query = """
     CALL apoc.periodic.iterate(
         'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_6843/R_COMMENTED.json") YIELD value UNWIND value.data AS edge RETURN edge',
         'MATCH (user:User {uid:edge.fb_id}),(post:Post {post_id:edge.post_id}) CREATE (user)-[r:COMMENTED {total : edge.total_comment, first_cmt_time : datetime(edge.first_cmt_time), last_cmt_time : datetime(edge.last_cmt_time)}]->(post)',
-        {batchSize:1000}
+        {batchSize:1000, iterateList:true, parallel:true}
     )
 """
 neo.run_query(query)
@@ -63,7 +63,7 @@ query = """
     CALL apoc.periodic.iterate(
         'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_6843/R_SHARED.json") YIELD value UNWIND value.data AS edge RETURN edge',
         'MATCH (user:User {uid:edge.fb_id}),(post:Post {post_id:edge.post_id}) CREATE (user)-[r:SHARED {total : edge.total_share}]->(post)',
-        {batchSize:1000}
+        {batchSize:1000, iterateList:true, parallel:true}
     )
 """
 neo.run_query(query)
@@ -76,7 +76,7 @@ query = """
     CALL apoc.periodic.iterate(
         'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_6843/R_POSTED.json") YIELD value UNWIND value.data AS edge RETURN edge',
         'MATCH (user:User {uid:edge.fb_id}),(post:Post {post_id:edge.post_id}) CREATE (user)-[r:POSTED]->(post)',
-        {batchSize:1000}
+        {batchSize:1000, iterateList:true, parallel:true}
     )
 """
 neo.run_query(query)

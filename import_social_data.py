@@ -1,6 +1,5 @@
 import time
 from neo4j_adapter import NeoAdapter
-import pandas as pd
 
 
 neo = NeoAdapter(host="10.9.3.209", port="7687", password="12345678")
@@ -16,7 +15,7 @@ start_time = time.time()
 query = """
     CALL apoc.periodic.iterate(
         'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_6843/N_User.json") YIELD value UNWIND value.data AS user RETURN user.uid AS uid',
-        'CREATE (:User {uid:uid})',
+        'MERGE (user:User {id:uid}) ON MATCH SET user.uid = uid ON CREATE SET user.id = uid, user.uid = uid',
         {batchSize:1000, iterateList:true, parallel:true}
     )
 """

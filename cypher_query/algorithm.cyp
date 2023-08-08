@@ -12,7 +12,15 @@ CALL gds.pageRank.stream('user-subgraph', {
   maxIterations: 20,
   dampingFactor: 0.85,
   relationshipWeightProperty: 'weight'
-  })
-  YIELD nodeId, score
-  RETURN nodeId, score
-   ORDER BY score DESC;
+})
+YIELD nodeId, score
+RETURN nodeId, score
+  ORDER BY score DESC;
+
+
+CALL gds.pageRank.write('user-subgraph', {
+  maxIterations: 20,
+  dampingFactor: 0.85,
+  writeProperty: 'pagerank'
+})
+YIELD nodePropertiesWritten, ranIterations

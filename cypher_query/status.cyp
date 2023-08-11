@@ -1,13 +1,17 @@
-// retrieves the visualization of the database schema
+// retrieve the visualization of the database schema
 CALL db.schema.visualization()
 
-// get total number of Nodes
+// retrieve all possible properties of nodes
+MATCH (u:User)
+RETURN DISTINCT keys(u) AS all_properties
+
+// get total number of nodes
 MATCH (n)
-RETURN count(n) AS numberOfNodes
+RETURN count(n) AS no_N
 
 // get total number of Relationships
 MATCH ()-[r]->()
-RETURN count(r) AS numberOfRelationships
+RETURN count(r) AS no_R
 
 // show all indexes
 SHOW INDEXES
@@ -16,3 +20,14 @@ SHOW INDEXES
 CALL gds.graph.list()
 YIELD graphName
 RETURN graphName;
+
+//show many data
+MATCH (n) WITH count(n) AS no_N
+MATCH ()-[r]->() WITH no_N, count(r) AS no_R
+MATCH (u1:User)-[r:COMMENTED_COMMON_POSTS]->(u2:User)
+WITH no_N, no_R, COUNT(r) AS no_CCP, COLLECT( DISTINCT u1) + COLLECT( DISTINCT u2) AS allUsers
+WITH no_N, no_R, no_CCP, SIZE(allUsers) AS no_Users_w_CCP
+MATCH (u1:User)-[r:INTERACTED_COMMON_POSTS]->(u2:User)
+WITH no_N, no_R, no_CCP, no_Users_w_CCP, COUNT(r) AS no_ICP, COLLECT( DISTINCT u1) + COLLECT( DISTINCT u2) AS allUsers
+WITH no_N, no_R, no_CCP, no_Users_w_CCP, no_ICP, SIZE(allUsers) AS no_Users_w_ICP    
+RETURN no_N, no_R, no_CCP, no_Users_w_CCP, no_ICP, no_Users_w_ICP

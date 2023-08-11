@@ -33,6 +33,8 @@ sudo nano /etc/neo4j/neo4j.conf
     - `dbms.security.allow_csv_import_from_file_urls=true`
     - `dbms.security.procedures.unrestricted=gds.*,apoc.*`
     - `dbms.security.procedures.allowlist=apoc.coll.*,apoc.load.*,gds.*,apoc.*`
+- Other Neo4j system properties
+    - `apoc.import.file.enabled=true`
 
 ## Extened library for Neo4j
 
@@ -43,9 +45,17 @@ sudo nano /etc/neo4j/neo4j.conf
 - plugins directory: `/var/lib/neo4j/plugins`
 - neo4j.conf file: `/etc/neo4j/neo4j.conf`
 
-### Install Neo4j *APOC*
+### Install and configure Neo4j *APOC*
 
 [Installation - APOC Extended Documentation](https://neo4j.com/labs/apoc/5/installation/)
+
+- create APOC configuration file:
+    
+    `cd /etc/neo4j`
+    `sudo touch apoc.conf`
+    
+- add config:
+    - `apoc.import.file.enabled=true`
 
 ## Basic commands
 

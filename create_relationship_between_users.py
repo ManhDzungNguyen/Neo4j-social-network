@@ -10,4 +10,3 @@ init_time = time.time()
 res = neo.run_query(filepath="./cypher_query/create_relationship_between_users.cyp")
 print(res)
 print(f"runtime: {time.time() - init_time}")
-

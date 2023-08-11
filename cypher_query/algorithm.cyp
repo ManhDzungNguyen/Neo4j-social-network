@@ -24,3 +24,4 @@ CALL gds.pageRank.write('user-subgraph', {
   writeProperty: 'pagerank'
 })
 YIELD nodePropertiesWritten, ranIterations
+

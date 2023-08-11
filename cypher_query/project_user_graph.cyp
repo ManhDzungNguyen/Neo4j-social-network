@@ -13,3 +13,21 @@ CALL gds.graph.project(
   }
 }
 )
+
+
+CALL gds.graph.project(
+  'user_icp',
+  ['User'],
+  {INTERACTED_COMMON_POSTS: { properties: 'weight'}},
+  {
+    nodeProperties: ['louvainCommunityID']
+  }
+)
+
+CALL gds.beta.graph.project.subgraph(
+  'user_c69236',
+  'user_icp',
+  'n.louvainCommunityID = 69236',
+  '*'
+)
+YIELD graphName, fromGraphName, nodeCount, relationshipCount

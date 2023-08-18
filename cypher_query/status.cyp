@@ -1,3 +1,11 @@
+// show all node labels
+CALL db.labels();
+
+// get a list of node properties
+MATCH (n:User)
+RETURN DISTINCT keys(n), size(keys(n))
+ORDER BY size(keys(n)) DESC 
+
 // retrieve the visualization of the database schema
 CALL db.schema.visualization()
 

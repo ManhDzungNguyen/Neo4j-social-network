@@ -1,4 +1,4 @@
-from neo4j_adapter import NeoAdapter
+from function import NeoAdapter
 
 
 neo = NeoAdapter(host="10.9.3.209", port="7687", password="12345678")

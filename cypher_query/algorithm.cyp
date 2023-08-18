@@ -8,14 +8,14 @@ LIMIT 10;
 
 
 // PageRank with Weight
-CALL gds.pageRank.stream('user-subgraph', {
-  maxIterations: 20,
-  dampingFactor: 0.85,
-  relationshipWeightProperty: 'weight'
-})
-YIELD nodeId, score
-RETURN nodeId, score
-  ORDER BY score DESC;
+// CALL gds.pageRank.stream('user-subgraph', {
+//   maxIterations: 20,
+//   dampingFactor: 0.85,
+//   relationshipWeightProperty: 'weight'
+// })
+// YIELD nodeId, score
+// RETURN nodeId, score
+//   ORDER BY score DESC;
 
 
 CALL gds.pageRank.write('user-subgraph', {
@@ -24,4 +24,12 @@ CALL gds.pageRank.write('user-subgraph', {
   writeProperty: 'pagerank'
 })
 YIELD nodePropertiesWritten, ranIterations
+
+
+
+CALL gds.betweenness.write('myGraph', {
+  writeProperty: ' betweenness',
+  concurrency: 4,
+})
+YIELD nodePropertiesWritten, computeMillis
 

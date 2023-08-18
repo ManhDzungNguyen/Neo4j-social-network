@@ -1,17 +1,20 @@
-from neo4j_adapter import NeoAdapter
+from function import NeoAdapter
 import time
 
 neo = NeoAdapter(host="10.9.3.209", port="7687", password="12345678")
 start_time = time.time()
 
 
-# neo.run_query(filepath="./cypher_query/create_interact_v2.cyp")
-# print(f"create relationship time: {time.time() - start_time}")
+res = neo.run_query("""     
+    CALL gds.louvain.write('user-icp', {
+        writeProperty: 'louvain_cid',
+        minCommunitySize: 5,
+        relationshipWeightProperty: 'weight',
+        maxLevels: 10
+    })
+    YIELD communityCount, modularity, modularities;
+""")
 
-# start_time = time.time()
 
-
-# neo.drop_property(property_name="pagerank",
-#                   label="User")
-print(neo.list_graph())
+print(res)
 print(f"runtime: {time.time() - start_time}")

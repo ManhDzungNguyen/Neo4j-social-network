@@ -1,7 +1,7 @@
 # Neo4j-social-network
 
 1. import social data
-2. create relationship between users
+2. create relationships between users
 3. project graph
 4. calculate User nodes PageRank
 

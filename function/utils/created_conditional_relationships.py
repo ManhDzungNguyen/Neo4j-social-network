@@ -1,6 +1,9 @@
-from tqdm import tqdm
+import sys
+
+sys.path.append("/home/dungnguyen/work/Neo4j-social-network")
+
 import time
-import argparse
+
 from function import NeoAdapter
 
 

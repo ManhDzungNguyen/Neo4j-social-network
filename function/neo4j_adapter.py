@@ -1,6 +1,7 @@
-from py2neo import Graph
-import pandas as pd
 import time
+
+import pandas as pd
+from py2neo import Graph
 
 
 class NeoAdapter(object):

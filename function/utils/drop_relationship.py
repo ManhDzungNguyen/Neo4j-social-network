@@ -1,5 +1,11 @@
-from neo4j_adapter import NeoAdapter
+import sys
+
+sys.path.append("/home/dungnguyen/work/Neo4j-social-network")
+
 import time
+
+from function import NeoAdapter
+
 
 neo = NeoAdapter(host="10.9.3.209", port="7687", password="12345678")
 

@@ -15,6 +15,12 @@ res = neo.run_query("""
     YIELD communityCount, modularity, modularities;
 """)
 
+# res = neo.run_query("""
+#     CALL gds.betweenness.write('user-icp', {
+#     writeProperty: 'global_betweenness'
+#     })
+#     YIELD nodePropertiesWritten, computeMillis
+# """)
 
 print(res)
 print(f"runtime: {time.time() - start_time}")

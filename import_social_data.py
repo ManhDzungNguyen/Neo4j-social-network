@@ -1,5 +1,6 @@
 import time
-from neo4j_adapter import NeoAdapter
+
+from function import NeoAdapter
 
 
 neo = NeoAdapter(host="10.9.3.209", port="7687", password="12345678")
@@ -14,7 +15,7 @@ init_time = time.time()
 start_time = time.time()
 query = """
     CALL apoc.periodic.iterate(
-        'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_6843/N_User.json") YIELD value UNWIND value.data AS user RETURN user.uid AS uid',
+        'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_2377/N_User.json") YIELD value UNWIND value.data AS user RETURN user.uid AS uid',
         'MERGE (user:User {id:uid}) ON MATCH SET user.uid = uid ON CREATE SET user.id = uid, user.uid = uid',
         {batchSize:1000, iterateList:true, parallel:true}
     )
@@ -27,7 +28,7 @@ print(f"Fininised importing User nodes: {time.time() - start_time}")
 start_time = time.time()
 query = """
     CALL apoc.periodic.iterate(
-        'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_6843/N_Post.json") YIELD value UNWIND value.data AS post RETURN post.post_id AS post_id',
+        'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_2377/N_Post.json") YIELD value UNWIND value.data AS post RETURN post.post_id AS post_id',
         'CREATE (:Post {post_id:post_id})',
         {batchSize:1000, iterateList:true, parallel:true}
     )
@@ -47,9 +48,9 @@ print(f"Fininised creating index: {time.time() - start_time}")
 start_time = time.time()
 query = """
     CALL apoc.periodic.iterate(
-        'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_6843/R_COMMENTED.json") YIELD value UNWIND value.data AS edge RETURN edge',
+        'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_2377/R_COMMENTED.json") YIELD value UNWIND value.data AS edge RETURN edge',
         'MATCH (user:User {uid:edge.fb_id}),(post:Post {post_id:edge.post_id}) CREATE (user)-[r:COMMENTED {total : edge.total_comment, first_cmt_time : datetime(edge.first_cmt_time), last_cmt_time : datetime(edge.last_cmt_time)}]->(post)',
-        {batchSize:1000, iterateList:true, parallel:true}
+        {batchSize:100}
     )
 """
 neo.run_query(query)
@@ -60,9 +61,9 @@ print(f"Fininised importing COMMENTED relationships: {time.time() - start_time}"
 start_time = time.time()
 query = """
     CALL apoc.periodic.iterate(
-        'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_6843/R_SHARED.json") YIELD value UNWIND value.data AS edge RETURN edge',
+        'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_2377/R_SHARED.json") YIELD value UNWIND value.data AS edge RETURN edge',
         'MATCH (user:User {uid:edge.fb_id}),(post:Post {post_id:edge.post_id}) CREATE (user)-[r:SHARED {total : edge.total_share}]->(post)',
-        {batchSize:1000, iterateList:true, parallel:true}
+        {batchSize:1000}
     )
 """
 neo.run_query(query)
@@ -73,9 +74,9 @@ print(f"Fininised importing SHARED relationships: {time.time() - start_time}")
 start_time = time.time()
 query = """
     CALL apoc.periodic.iterate(
-        'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_6843/R_POSTED.json") YIELD value UNWIND value.data AS edge RETURN edge',
+        'CALL apoc.load.json("/home/dungnguyen/work/Neo4j-social-network/data/clean/event_2377/R_POSTED.json") YIELD value UNWIND value.data AS edge RETURN edge',
         'MATCH (user:User {uid:edge.fb_id}),(post:Post {post_id:edge.post_id}) CREATE (user)-[r:POSTED]->(post)',
-        {batchSize:1000, iterateList:true, parallel:true}
+        {batchSize:1000}
     )
 """
 neo.run_query(query)

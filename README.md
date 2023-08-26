@@ -3,8 +3,10 @@
 1. import social data
 2. create relationships between users
 3. project graph
-4. calculate User nodes PageRank
+4. calculate User nodes PageRank, Betweenness Centrality and apply Louvain to detect communities
+5. Visualize
 
+![Image](image.png)
 
 # Neo4j basics
 
